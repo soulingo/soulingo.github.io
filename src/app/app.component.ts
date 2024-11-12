@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import emailjs from '@emailjs/browser';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { animate, style, transition, trigger } from '@angular/animations';
 interface Step {
   icon: string;
   title: string;
@@ -15,9 +17,45 @@ interface Feature {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(50px) scale(0.8)' }),
+        animate('300ms cubic-bezier(.8,-0.6,0.2,1.5)', style({ opacity: 1, transform: 'translateY(0) scale(1)' }))
+      ]),
+      transition(':leave', [
+        animate('300ms cubic-bezier(.8,-0.6,0.2,1.5)', style({ opacity: 0, transform: 'translateY(50px) scale(0.8)' }))
+      ])
+    ]),
+    trigger('bouncyScale', [
+      transition(':enter', [
+        style({ transform: 'scale(0.5)' }),
+        animate('500ms cubic-bezier(.8,-0.6,0.2,1.5)', style({ transform: 'scale(1)' }))
+      ]),
+      transition(':leave', [
+        animate('500ms cubic-bezier(.8,-0.6,0.2,1.5)', style({ transform: 'scale(0.5)' }))
+      ])
+    ])
+  ]
 })
 export class AppComponent {
+  emailForm: FormGroup;
+
+  constructor(private fb: FormBuilder) {
+    this.emailForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]]
+    });
+  }
+
+  onSubmit() {
+    this.isSubmit = true;
+    if (this.emailForm.valid) {
+      this.mail = this.emailForm.value.email;
+      this.sendMail();
+      this.showWaitlistModal = false;
+    }
+  }
   howItWorksSteps: Step[] = [
     {
       icon: 'mic',
@@ -69,6 +107,7 @@ export class AppComponent {
       'The "w" sound in "walk" needs attention'
     ]
   };
+
   showWaitlistModal = false;
   readonly primaryColor = '#FA6927';
   readonly secondaryColor = '#70B8B5';
@@ -84,6 +123,6 @@ export class AppComponent {
         publicKey: publicKey
       }
     );
-
   }
+  isSubmit = false;
 }
