@@ -1,4 +1,4 @@
-import emailjs from '@emailjs/browser';
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, Input, HostListener } from '@angular/core';
@@ -29,44 +29,6 @@ import { Menu, X, ChevronDown } from 'lucide-angular';
   ]
 })
 export class AppComponent {
-  emailForm: FormGroup;
-  isSubmit = false;
-  showWaitlistModal = false;
-
-
-  constructor(private fb: FormBuilder) {
-    this.emailForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]]
-    });
-  }
-  
-
-
-
-  onSubmit() {
-    this.isSubmit = true;
-    if (this.emailForm.valid) {
-      this.mail = this.emailForm.value.email;
-      this.sendMail();
-      this.showWaitlistModal = false;
-    }
-  }
-
-
-
-  mail: string = '';
-  sendMail() {
-    const publicKey = 'K3RqH1B-ZBrMFdElA';
-    // emailjs
-    emailjs.send("service_spo0gzx", "template_n97f3fj",
-      {
-        email: this.mail
-      },
-      {
-        publicKey: publicKey
-      }
-    );
-  }
 
 
   isScrolled = false;

@@ -9,7 +9,7 @@ import {
   ArrowRight,
   RefreshCw
 } from 'lucide-angular';
-
+import emailjs from '@emailjs/browser';
 interface Benefit {
   icon: any;
   text: string;
@@ -25,6 +25,7 @@ export class WaitlistComponent {
   waitlistForm: FormGroup;
   loading = false;
   error = '';
+  successMessage = '';
 
   readonly benefits: Benefit[] = [
     { icon: Sparkles, text: 'Early access to all premium features' },
@@ -55,12 +56,22 @@ export class WaitlistComponent {
 
   async onSubmit() {
     if (this.waitlistForm.valid) {
+      const email = this.waitlistForm.value.email;
+      
+      // Check if email already submitted
+      if (localStorage.getItem(`waitlist_${email}`)) {
+        this.error = 'You have already joined the waitlist!';
+        return;
+      }
+
       this.loading = true;
       this.error = '';
+      this.successMessage = '';
 
       try {
-        // Burada gerçek API çağrısı yapılacak
-        await this.simulateApiCall(this.waitlistForm.value.email);
+        await this.simulateApiCall(email);
+        localStorage.setItem(`waitlist_${email}`, 'true');
+        this.successMessage = "We can't wait to have you on board! We'll be in touch soon.";
         this.waitlistForm.reset();
       } catch (err) {
         this.error = 'Something went wrong. Please try again.';
@@ -71,6 +82,19 @@ export class WaitlistComponent {
   }
 
   private simulateApiCall(email: string): Promise<void> {
+    this.sendMail();
     return new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+  sendMail() {
+    const publicKey = 'K3RqH1B-ZBrMFdElA';
+    // emailjs
+    emailjs.send("service_spo0gzx", "template_n97f3fj",
+      {
+        email: this.waitlistForm.value.email
+      },
+      {
+        publicKey: publicKey
+      }
+    );
   }
 }
