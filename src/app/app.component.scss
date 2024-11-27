@@ -1,15 +1,8 @@
-/* landing-page.component.scss */
 :host {
-    display: block;
-  }
-  
-  .gradient-text {
-    background: linear-gradient(to right, #FA6927, #70B8B5);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .gradient-bg {
-    background: linear-gradient(135deg, #FA6927, #70B8B5);
-  }
+  display: block;
+}
+
+.backdrop-blur-lg {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}

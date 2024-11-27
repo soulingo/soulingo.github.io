@@ -1,245 +1,77 @@
 <!-- landing-page.component.html -->
-<div class="min-h-screen bg-gray-950 text-gray-100">
+<div class="min-h-screen ">
   <!-- Navigation -->
-  <nav class="fixed top-0 left-0 right-0 bg-gray-950/80 backdrop-blur-md z-50 border-b border-gray-800">
-    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-      <div class="text-2xl font-bold gradient-text">
-        SouLingo
-      </div>
-      <button (click)="showWaitlistModal = true"
-        class="text-white px-6 py-2 rounded-full transition-colors"
-        [style.backgroundColor]="primaryColor">
-        Join Beta
-      </button>
-    </div>
-  </nav>
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+  [ngClass]="[
+    isScrolled ? theme.bgSecondary + ' shadow-lg backdrop-blur-lg border-b' + theme.border : 'bg-transparent',
+    'transition-all duration-300'
+  ]">
+<div class="container px-4 mx-auto">
+ <div class="flex items-center justify-between h-16">
+   <!-- Logo -->
+   <div class="text-2xl font-bold bg-gradient-to-r from-[#0EA5E9] to-[#6366F1] text-transparent bg-clip-text">
+     SouLingo
+   </div>
+
+   <!-- Desktop Navigation -->
+   <div class="items-center hidden gap-8 md:flex">
+     <ng-container *ngFor="let item of navItems">
+       <ng-container *ngIf="!item.isButton">
+         <a href="javascript:void(0)"
+            (click)="scrollToSection(item.href)"
+            [ngClass]="[
+              theme.textSecondary,
+              'text-sm hover:text-[#0EA5E9] transition-colors'
+            ]">
+           {{item.label}}
+         </a>
+       </ng-container>
+       <ng-container *ngIf="item.isButton">
+         <button 
+           (click)="scrollToSection(item.href)"
+           class="px-4 py-2 bg-[#0EA5E9] text-white rounded-full text-sm hover:bg-[#0EA5E9]/90 transition-colors">
+           {{item.label}}
+         </button>
+       </ng-container>
+     </ng-container>
+   </div>
+
+   <!-- Mobile Menu Button -->
+   <button class="md:hidden p-2 rounded-lg hover:bg-[#0EA5E9]/10 transition-colors"
+           [ngClass]="theme.textSecondary"
+           (click)="isMobileMenuOpen = !isMobileMenuOpen">
+     <lucide-icon 
+       [name]="isMobileMenuOpen ? XIcon : MenuIcon"
+       class="w-6 h-6">
+     </lucide-icon>
+   </button>
+ </div>
+
+ <!-- Mobile Navigation -->
+ <div class="md:hidden"
+      [ngClass]="{'hidden': !isMobileMenuOpen}">
+   <div class="py-4 space-y-4">
+     <ng-container *ngFor="let item of navItems">
+       <a href="javascript:void(0)"
+          (click)="scrollToSection(item.href)"
+          [ngClass]="[
+            !item.isButton ? theme.textSecondary : 'text-[#0EA5E9]',
+            'block px-4 py-2 text-sm hover:bg-[#0EA5E9]/10 rounded-lg transition-colors'
+          ]">
+         {{item.label}}
+       </a>
+     </ng-container>
+   </div>
+ </div>
+</div>
+</nav>
 
   <!-- Hero Section -->
-  <header class="pt-32 pb-20">
-    <div class="container mx-auto px-4 text-center ">
-      <h1 class="text-5xl sm:text-6xl font-bold leading-tight mb-6 max-w-4xl mx-auto">
-        Learn Languages Faster with
-        <span class="gradient-text"> Your Own Voice</span>
-      </h1>
-      <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-        Experience the power of hearing yourself speak perfectly in any language. Our AI technology transforms your voice in real-time for natural, confident learning.
-      </p>
-      <div class="flex gap-4 justify-center">
-        <button  (click)="showWaitlistModal = true"
-          class="text-white px-8 py-4 rounded-full flex items-center gap-2 transition-colors"
-          [style.backgroundColor]="primaryColor">
-          Get Early Access
-          <i-lucide name="arrow-right" class="w-5 h-5"></i-lucide>
-        </button>
-      </div>
- 
-    </div>
-  </header>
-  <!-- Example Image Section -->
-  <!-- Product Preview Section -->
-  <section class="py-20">
-    <div class="container mx-auto px-4">
-      <div class="rounded-3xl p-8 sm:p-12 gradient-bg">
-        <div class="aspect-video bg-gray-950/20 rounded-xl flex items-center justify-center border border-white/10">
-          <div class="group cursor-pointer flex items-center gap-4">
-            <div class="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors">
-              <i-lucide name="play" class="w-6 h-6 text-white"></i-lucide>
-            </div>
-            <span class="text-white group-hover:text-white/90 transition-colors">
-              Coming Soon
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Demo Section -->
-  <section class="py-20 border-t border-gray-800">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold text-center mb-6">See It In Action</h2>
-      <p class="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
-        Experience how SouLingo transforms your voice in real-time, providing instant feedback and perfect pronunciation.
-      </p>
-      
-      <!-- Chat Demo -->
-      <div class="max-w-lg mx-auto bg-gray-900/50 rounded-xl p-6 border border-gray-800">
-        <div class="space-y-4">
-          <!-- Original Text -->
-          <div class="bg-gray-800/50 p-4 rounded-xl">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm text-gray-400">Original Text</span>
-              <button class="p-2 hover:bg-gray-700/50 rounded-full transition-colors">
-                <i-lucide name="volume-2" [style.color]="secondaryColor" class="w-4 h-4"></i-lucide>
-              </button>
-            </div>
-            <p class="text-white">
-              "{{chatDemo.originalText}}"
-            </p>
-          </div>
-
-          <!-- User's Attempt -->
-          <div class="flex justify-end">
-            <div class="bg-gray-800/50 max-w-[80%] p-4 rounded-xl">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm text-gray-400">Your Recording</span>
-                <button class="p-2 hover:bg-gray-700/50 rounded-full transition-colors">
-                  <i-lucide name="volume-2" [style.color]="primaryColor" class="w-4 h-4"></i-lucide>
-                </button>
-              </div>
-              <p class="text-white">
-                "{{chatDemo.userAttempt}}"
-              </p>
-              <div class="mt-2 text-sm">
-                <span class="text-red-400">Pronunciation Score: {{chatDemo.pronounciationScore}}%</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- AI-Transformed Voice -->
-          <div class="flex justify-start">
-            <div class="max-w-[80%] p-4 rounded-xl" [style.backgroundColor]="'rgba(250, 105, 39, 0.2)'">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm text-gray-400">Your Voice (AI-Enhanced)</span>
-                <button class="p-2 hover:bg-gray-700/50 rounded-full transition-colors">
-                  <i-lucide name="volume-2" [style.color]="primaryColor" class="w-4 h-4"></i-lucide>
-                </button>
-              </div>
-              <p class="text-white">
-                "{{chatDemo.originalText}}"
-              </p>
-              <div class="mt-2 text-sm">
-                <span [style.color]="secondaryColor">Perfect Pronunciation ✨</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Feedback -->
-          <div class="bg-gray-800/50 p-4 rounded-xl">
-            <div class="flex items-center gap-2 mb-2">
-              <i-lucide name="sparkles" [style.color]="secondaryColor" class="w-4 h-4"></i-lucide>
-              <span class="text-sm text-gray-400">AI Feedback</span>
-            </div>
-            <ul class="space-y-2 text-sm text-gray-300">
-              <li *ngFor="let item of chatDemo.feedback">• {{item}}</li>
-            </ul>
-          </div>
-
-          <!-- Practice Suggestion -->
-          <div class="p-4 rounded-xl border" 
-               [style.borderColor]="secondaryColor"
-               [style.backgroundColor]="'rgba(112, 184, 181, 0.1)'">
-            <div class="flex items-center gap-2 mb-2">
-              <i-lucide name="message-circle" [style.color]="secondaryColor" class="w-4 h-4"></i-lucide>
-              <span class="text-sm" [style.color]="secondaryColor">Try Again?</span>
-            </div>
-            <button 
-              class="w-full mt-2 p-2 rounded-lg text-white text-sm flex items-center justify-center gap-2"
-              [style.backgroundColor]="primaryColor">
-              <i-lucide name="mic" class="w-4 h-4"></i-lucide>
-              Record Again
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- How It Works -->
-  <section class="py-20 border-t border-gray-800">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold text-center mb-16">How SouLingo Works</h2>
-      <div class="grid md:grid-cols-2 gap-12 grid-rows-3">
-        <div class="container col-span-1 row-span-3  mx-auto px-4 text-center  flex items-center justify-center">
-          <img src="assets/example.png" alt="Example Image" class="mx-auto  rounded-lg  scale-150">
-        </div>
-        <div *ngFor="let step of howItWorksSteps" class="text-center">
-          <div class="flex justify-center mb-4">
-            <i-lucide [name]="step.icon" [style.color]="secondaryColor" class="w-8 h-8"></i-lucide>
-          </div>
-          <h3 class="text-xl font-bold mb-2">{{step.title}}</h3>
-          <p class="text-gray-400">{{step.description}}</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section class="py-20 bg-gray-900">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold text-center mb-16">Why Choose SouLingo</h2>
-      <div class="grid md:grid-cols-2 gap-8">
-        <div *ngFor="let feature of features" class="flex gap-4 p-6 bg-gray-800/50 rounded-xl border border-gray-700">
-          <div class="flex-shrink-0">
-            <div class="w-12 h-12 bg-gray-900 rounded-full flex items-center justify-center">
-              <i-lucide [name]="feature.icon" [style.color]="secondaryColor" class="w-6 h-6"></i-lucide>
-            </div>
-          </div>
-          <div>
-            <h3 class="text-lg font-bold mb-2">{{feature.title}}</h3>
-            <p class="text-gray-400">{{feature.description}}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section class="py-20">
-    <div class="container mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold mb-6">Be Among the First</h2>
-      <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-        Join our beta program and help shape the future of language learning.
-      </p>
-      <button  (click)="showWaitlistModal = true"
-        class="text-white px-8 py-4 rounded-full flex items-center gap-2 mx-auto transition-colors"
-        [style.backgroundColor]="primaryColor">
-        Join Beta Program
-        <i-lucide name="arrow-right" class="w-5 h-5"></i-lucide>
-      </button>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="border-t border-gray-800 py-8">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center">
-        <div class="text-xl font-bold gradient-text">
-          SouLingo
-        </div>
-        <!-- <div class="text-sm text-gray-400">
-          © 2024 SouLingo. All rights reserved.
-        </div> -->
-      </div>
-    </div>
-  </footer>
+<app-hero></app-hero>
+<app-how-it-works></app-how-it-works>
+<app-features></app-features>
+<app-privacy-security></app-privacy-security>
+<app-waitlist></app-waitlist>
+<app-footer></app-footer>
 </div>
 
-<!-- Join Waitlist Modal -->
-<div [@fadeIn] *ngIf="showWaitlistModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-gray-900 p-8 rounded-xl max-w-md w-full">
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-2xl font-bold text-white">Join the Waitlist</h3>
-      <button (click)="showWaitlistModal = false" class="text-gray-400 hover:text-gray-200 transition-colors">
-        <i-lucide name="x" class="w-6 h-6"></i-lucide>
-      </button>
-    </div>
-    <form (ngSubmit)="onSubmit()" [formGroup]="emailForm" >
-      <div class="mb-4">
-        <label for="email" class="block text-sm text-gray-400 mb-2">Email Address</label>
-        <input type="email" id="email" formControlName="email"
-        class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-primaryColor" >
-        <div *ngIf="emailForm.get('email')?.invalid && emailForm.get('email')?.touched"
-            class="text-sm text-red-500">
-            Please enter a valid email address.
-        </div>
-    </div>
-      <button
-      type="submit" 
-      class="w-full py-3 rounded-lg text-white transition-colors"
-      [style.backgroundColor]="primaryColor">
-      Join Waitlist
-      </button>
-    </form>
-  </div>
-</div>

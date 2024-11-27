@@ -1,19 +1,8 @@
-import { Component } from '@angular/core';
 import emailjs from '@emailjs/browser';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
-interface Step {
-  icon: string;
-  title: string;
-  description: string;
-}
-
-interface Feature {
-  icon: string;
-  title: string;
-  description: string;
-}
-
+import { Component, Input, HostListener } from '@angular/core';
+import { Menu, X, ChevronDown } from 'lucide-angular';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -41,12 +30,18 @@ interface Feature {
 })
 export class AppComponent {
   emailForm: FormGroup;
+  isSubmit = false;
+  showWaitlistModal = false;
+
 
   constructor(private fb: FormBuilder) {
     this.emailForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
     });
   }
+  
+
+
 
   onSubmit() {
     this.isSubmit = true;
@@ -56,61 +51,9 @@ export class AppComponent {
       this.showWaitlistModal = false;
     }
   }
-  howItWorksSteps: Step[] = [
-    {
-      icon: 'mic',
-      title: 'Record Your Voice',
-      description: 'Speak naturally in your native language to create your unique voice profile.'
-    },
-    {
-      icon: 'sparkles',
-      title: 'AI Transformation',
-      description: 'Our Edge AI technology transforms your voice to speak perfectly in your target language.'
-    },
-    {
-      icon: 'message-circle',
-      title: 'Practice & Improve',
-      description: 'Get instant feedback and hear yourself speaking fluently, building confidence naturally.'
-    }
-  ];
 
-  features: Feature[] = [
-    {
-      icon: 'zap',
-      title: 'Edge AI Technology',
-      description: 'Real-time voice transformation with ultra-low latency, all processed securely on your device.'
-    },
-    {
-      icon: 'globe',
-      title: 'Learn Anywhere',
-      description: 'Practice online or offline. Your personal language coach is always available.'
-    },
-    {
-      icon: 'trophy',
-      title: 'Research-Backed',
-      description: 'Built on proven research showing the benefits of learning with your own voice.'
-    },
-    {
-      icon: 'users',
-      title: 'Personalized Learning',
-      description: 'Your unique voice profile ensures a natural, personalized learning experience.'
-    }
-  ];
 
-  chatDemo = {
-    originalText: "The weather is absolutely beautiful today. I think I'll go for a walk in the park.",
-    userAttempt: "Ze wezzer is absolootly byootiful today. I sink I'll go for a valk in ze park.",
-    pronounciationScore: 72,
-    feedback: [
-      'Focus on the "th" sound in "weather"',
-      'Practice "absolutely" - stress on the first syllable',
-      'The "w" sound in "walk" needs attention'
-    ]
-  };
 
-  showWaitlistModal = false;
-  readonly primaryColor = '#FA6927';
-  readonly secondaryColor = '#70B8B5';
   mail: string = '';
   sendMail() {
     const publicKey = 'K3RqH1B-ZBrMFdElA';
@@ -124,5 +67,41 @@ export class AppComponent {
       }
     );
   }
-  isSubmit = false;
+
+
+  isScrolled = false;
+  isMobileMenuOpen = false;
+
+  readonly navItems = [
+    { label: 'How it Works', href: '#how-it-works' },
+    { label: 'Features', href: '#features' },
+    { label: 'Privacy', href: '#privacy' },
+    { label: 'Join Beta', href: '#beta', isButton: true }
+  ];
+
+  // Icons
+  MenuIcon = Menu;
+  XIcon = X;
+  ChevronDownIcon = ChevronDown;
+  isDarkTheme = true;
+  theme = {
+    bg: this.isDarkTheme ? 'bg-[#030711]' : 'bg-gray-50',
+    bgSecondary: this.isDarkTheme ? 'bg-[#0F1729]' : 'bg-white',
+    text: this.isDarkTheme ? 'text-white' : 'text-gray-900',
+    textSecondary: this.isDarkTheme ? 'text-gray-400' : 'text-gray-500',
+    border: this.isDarkTheme ? 'border-gray-800' : 'border-gray-200'
+  };
+
+  @HostListener('window:scroll')
+  onWindowScroll() {
+    this.isScrolled = window.scrollY > 20;
+  }
+
+  scrollToSection(sectionId: string): void {
+    const element = document.getElementById(sectionId?.replace('#', ''));
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      this.isMobileMenuOpen = false;
+    }
+  }
 }

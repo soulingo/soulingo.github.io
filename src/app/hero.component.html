@@ -1,0 +1,123 @@
+<header 
+  id="hero" 
+  class="relative pt-32 pb-20 overflow-hidden transition-colors duration-300"
+  [ngClass]="theme.bg"
+  role="banner">
+  
+  <!-- Background Effects -->
+  <div class="absolute inset-0" aria-hidden="true">
+    <div [ngClass]="gridBackground" class="absolute inset-0">
+      <div [ngClass]="gradientOverlay" class="absolute inset-0"></div>
+    </div>
+    
+    <!-- Particles -->
+    <ng-container *ngFor="let particle of particles">
+      <div 
+        class="absolute w-1 h-1 bg-[#38BDF8] rounded-full animate-float"
+        [style.left]="particle.left"
+        [style.top]="particle.top"
+        [style.animation-delay]="particle.delay"
+        [style.animation-duration]="particle.duration">
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="container relative px-4 mx-auto">
+    <!-- Tech Badge -->
+    <div class="flex justify-center mb-8">
+      <div class="relative group" role="presentation">
+        <div class="absolute -inset-1 bg-gradient-to-r from-[#0EA5E9] to-[#10B981] rounded-full blur opacity-25 group-hover:opacity-50 transition-all duration-300">
+        </div>
+        <div [ngClass]="theme.bgSecondary" class="backdrop-blur-xl border border-[#0EA5E9]/20 rounded-full py-2 px-4 flex items-center gap-3 relative">
+          <div class="flex items-center gap-2 p-1 px-2 bg-[#0EA5E9]/10 rounded-full">
+            <lucide-icon [name]="MicIcon" class="w-4 h-4 text-[#38BDF8]"></lucide-icon>
+            <lucide-icon [name]="SparklesIcon" class="w-4 h-4 text-[#38BDF8]"></lucide-icon>
+          </div>
+          <span class="text-sm bg-gradient-to-r from-[#38BDF8] to-[#34D399] text-transparent bg-clip-text font-medium">
+            Next-Gen Voice AI
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto mb-12 text-center">
+      <div class="relative mb-6">
+        <h1 class="mb-6 text-4xl font-bold leading-tight md:text-6xl lg:text-7xl">
+          <span [ngClass]="theme.text" class="block mb-2">
+            Experience the Future of
+          </span>
+          <span class="relative inline-block">
+            <span class="absolute -inset-1 bg-gradient-to-r from-[#0EA5E9] to-[#10B981] blur-lg opacity-25">
+            </span>
+            <span class="relative bg-gradient-to-r from-[#0EA5E9] via-[#38BDF8] to-[#10B981] text-transparent bg-clip-text">
+              Voice Learning
+            </span>
+          </span>
+        </h1>
+      </div>
+
+      <p [ngClass]="theme.textSecondary" class="max-w-2xl mx-auto mb-8 text-lg leading-relaxed md:text-xl">
+        Transform your pronunciation instantly with our
+        <span class="text-[#38BDF8] font-medium">AI-powered</span>
+        voice enhancement technology.
+      </p>
+
+      <!-- Feature Chips -->
+      <div class="flex flex-wrap items-center justify-center gap-4 mb-8">
+        <div *ngFor="let stat of HERO_STATS" 
+             [ngClass]="theme.bgSecondary" 
+             class="group flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-sm border border-[#0EA5E9]/20 hover:border-[#0EA5E9]/40 transition-all duration-300"
+             role="presentation">
+          <lucide-icon [name]="stat.icon" [style.color]="stat.color" class="w-4 h-4">
+          </lucide-icon>
+          <span [ngClass]="theme.textSecondary" class="text-sm group-hover:text-[#E2E8F0] transition-colors">
+            {{stat.label}}
+          </span>
+        </div>
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col justify-center gap-4 mb-12 sm:flex-row">
+        <button 
+          (mouseenter)="isHovered$.next(true)"
+          (mouseleave)="isHovered$.next(false)"
+          (click)="scrollToSection('beta')"
+          class="relative group">
+          <div class="absolute -inset-1 bg-gradient-to-r from-[#0EA5E9] to-[#10B981] rounded-full blur opacity-25 group-hover:opacity-50 transition-all duration-300">
+          </div>
+          <div [ngClass]="theme.bgSecondary" class="relative px-8 py-4 rounded-full border border-[#0EA5E9]/20 group-hover:border-[#0EA5E9]/40 transition-all duration-300 flex items-center justify-center gap-2">
+            <lucide-icon 
+              [name]="(isHovered$ | async) ? TimerIcon : VolumeIcon" 
+              class="w-5 h-5 text-[#38BDF8]">
+            </lucide-icon>
+            <span [ngClass]="theme.text">
+              {{(isHovered$ | async) ? 'Join Waitlist' : 'Get Started'}}
+            </span>
+            <lucide-icon 
+              [name]="ArrowRightIcon" 
+              class="w-5 h-5 text-[#38BDF8] group-hover:translate-x-1 transition-transform">
+            </lucide-icon>
+          </div>
+        </button>
+
+        <button
+          (mouseenter)="showComingSoon$.next(true)"
+          (mouseleave)="showComingSoon$.next(false)"
+          [ngClass]="theme.textSecondary"
+          class="px-8 py-4 rounded-full border border-[#0EA5E9]/20 hover:bg-[#0F1729]/80 transition-all duration-300 hover:border-[#0EA5E9]/40 backdrop-blur-sm relative">
+          <span class="transition-opacity duration-300"
+                [class.opacity-0]="showComingSoon$ | async"
+                [class.opacity-100]="!(showComingSoon$ | async)">
+            Watch Demo
+          </span>
+          <span class="absolute inset-0 flex items-center justify-center transition-opacity duration-300"
+                [class.opacity-100]="showComingSoon$ | async"
+                [class.opacity-0]="!(showComingSoon$ | async)">
+            Coming Soon
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>

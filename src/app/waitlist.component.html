@@ -1,0 +1,95 @@
+<section 
+  id="beta" 
+  class="relative py-20 overflow-hidden"
+  [ngClass]="theme.bg">
+  
+  <!-- Background Effects -->
+  <div class="absolute inset-0">
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#0EA5E9/5_1px,transparent_1px),linear-gradient(to_bottom,#0EA5E9/5_1px,transparent_1px)] bg-[size:24px_24px]">
+      <div [ngClass]="isDarkTheme ? 'from-[#030711] via-transparent to-[#030711]' : 'from-white via-transparent to-white'" 
+           class="absolute inset-0 bg-gradient-to-b">
+      </div>
+    </div>
+  </div>
+
+  <div class="container relative px-4 mx-auto">
+    <div [ngClass]="theme.bgSecondary" 
+         class="max-w-4xl mx-auto rounded-2xl border border-[#0EA5E9]/20 overflow-hidden">
+      
+      <!-- Header -->
+      <div class="p-8 text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-[#0EA5E9]/10 rounded-full">
+          <lucide-icon [name]="TimerIcon" class="w-4 h-4 text-[#0EA5E9] animate-pulse"></lucide-icon>
+          <span class="text-sm font-medium text-[#0EA5E9]">
+            Limited Beta Access
+          </span>
+        </div>
+        <h2 [ngClass]="theme.text" class="mb-4 text-3xl font-bold">
+          Join the Future of Voice Learning
+        </h2>
+        <p [ngClass]="theme.textSecondary" class="max-w-xl mx-auto mb-8">
+          Be among the first to experience our revolutionary AI-powered pronunciation enhancement technology
+        </p>
+
+        <!-- Waitlist Form -->
+        <form [formGroup]="waitlistForm" 
+              (ngSubmit)="onSubmit()"
+              class="w-full max-w-md mx-auto">
+          <div class="relative">
+            <input type="email"
+                   formControlName="email"
+                   placeholder="Enter your email"
+                   [ngClass]="[
+                     theme.bgSecondary,
+                     'w-full px-6 py-4 rounded-full text-white border-2 border-[#0EA5E9]/20 focus:border-[#0EA5E9] outline-none transition-all duration-300'
+                   ]"
+                   required>
+            <button type="submit"
+                    [disabled]="loading || !waitlistForm.valid"
+                    class="absolute right-2 top-2 px-6 py-2 bg-[#0EA5E9] rounded-full text-white flex items-center gap-2 hover:bg-[#0EA5E9]/90 transition-colors disabled:opacity-70 disabled:cursor-not-allowed">
+              <ng-container *ngIf="loading; else submitText">
+                Loading
+                <lucide-icon [name]="RefreshCwIcon" class="w-4 h-4 animate-spin"></lucide-icon>
+              </ng-container>
+              <ng-template #submitText>
+                Join Waitlist
+                <lucide-icon [name]="ArrowRightIcon" class="w-4 h-4"></lucide-icon>
+              </ng-template>
+            </button>
+          </div>
+          <p *ngIf="error" class="mt-2 text-sm text-red-500">{{error}}</p>
+        </form>
+      </div>
+
+      <!-- Benefits Grid -->
+      <div class="grid md:grid-cols-2 gap-6 p-8 bg-[#0EA5E9]/5 border-t border-[#0EA5E9]/20">
+        <div *ngFor="let benefit of benefits" 
+             class="flex items-start gap-4">
+          <div class="p-2 rounded-full bg-[#0EA5E9]/10">
+            <lucide-icon [name]="benefit.icon" class="w-5 h-5 text-[#0EA5E9]"></lucide-icon>
+          </div>
+          <p [ngClass]="theme.textSecondary" class="text-sm">{{benefit.text}}</p>
+        </div>
+      </div>
+
+      <!-- Trust Signals -->
+      <div class="p-8 text-center border-t border-[#0EA5E9]/20">
+        <div class="flex items-center justify-center gap-8">
+          <div>
+            <div [ngClass]="theme.text" class="text-2xl font-bold">50+</div>
+            <div [ngClass]="theme.textSecondary" class="text-sm">Beta Users</div>
+          </div>
+          <div>
+            <div [ngClass]="theme.text" class="text-2xl font-bold">100%</div>
+            <div [ngClass]="theme.textSecondary" class="text-sm">Privacy</div>
+          </div>
+          <div>
+            <div [ngClass]="theme.text" class="text-2xl font-bold">MIT</div>
+            <div [ngClass]="theme.textSecondary" class="text-sm">Research</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

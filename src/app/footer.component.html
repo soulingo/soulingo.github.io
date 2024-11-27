@@ -1,0 +1,67 @@
+<footer [ngClass]="[theme.bg, 'border-t', theme.border]">
+    <div class="container px-4 py-12 mx-auto">
+      <!-- Main Footer Content -->
+      <div class="grid grid-cols-2 gap-8 mb-12 md:grid-cols-12">
+        <!-- Brand Column -->
+        <div class="col-span-2 md:col-span-4">
+          <div class="text-2xl font-bold bg-gradient-to-r from-[#0EA5E9] to-[#6366F1] text-transparent bg-clip-text mb-4">
+            SouLingo
+          </div>
+          <p [ngClass]="theme.textSecondary" class="mb-4 text-sm">
+            Keep your voice natural, perfect your English with our AI-powered language learning platform.
+          </p>
+          <div class="flex items-center gap-1">
+            <lucide-icon [name]="GlobeIcon" class="w-4 h-4 text-[#0EA5E9]"></lucide-icon>
+            <span [ngClass]="theme.textSecondary" class="text-sm">USA</span>
+          </div>
+        </div>
+  
+        <!-- Links Columns -->
+        <ng-container *ngFor="let section of footerLinks | keyvalue">
+          <div class="col-span-2">
+            <h3 [ngClass]="theme.text" class="mb-4 font-semibold">
+              {{section.value.title}}
+            </h3>
+            <ul class="space-y-2">
+              <li *ngFor="let link of section.value.links">
+                <a href="javascript:void(0)"
+                   (click)="scrollToSection(link.href)"
+                   [ngClass]="theme.textSecondary"
+                   class="text-sm hover:text-[#0EA5E9] flex items-center gap-2 group cursor-pointer">
+                  <lucide-icon 
+                    [name]="ChevronRightIcon" 
+                    class="w-3 h-3 transition-transform group-hover:translate-x-1">
+                  </lucide-icon>
+                  {{link.label}}
+                  <span *ngIf="link.badge" 
+                        class="text-xs px-2 py-0.5 bg-[#0EA5E9]/10 text-[#0EA5E9] rounded-full">
+                    {{link.badge}}
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </ng-container>
+      </div>
+  
+      <!-- Bottom Bar -->
+      <div [ngClass]="['pt-8 border-t', theme.border]" 
+           class="flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <!-- Copyright -->
+        <div [ngClass]="theme.textSecondary" class="text-sm">
+          © 2024 SouLingo. All rights reserved.
+        </div>
+  
+        <!-- Social Links -->
+        <div class="flex items-center gap-4">
+          <a *ngFor="let social of socialLinks"
+             [href]="social.href"
+             [ngClass]="theme.textSecondary"
+             class="hover:text-[#0EA5E9] transition-colors"
+             [attr.aria-label]="social.label">
+            <lucide-icon [name]="social.icon" class="w-5 h-5"></lucide-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>

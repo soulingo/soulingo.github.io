@@ -1,0 +1,91 @@
+<section 
+  id="privacy" 
+  class="relative py-20 overflow-hidden transition-colors duration-300"
+  [ngClass]="theme.bg">
+  
+  <!-- Background Effects -->
+  <div class="absolute inset-0">
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#0EA5E9/5_1px,transparent_1px),linear-gradient(to_bottom,#0EA5E9/5_1px,transparent_1px)] bg-[size:24px_24px]">
+      <div [ngClass]="isDarkTheme ? 'from-[#030711] via-transparent to-[#030711]' : 'from-white via-transparent to-white'" 
+           class="absolute inset-0 bg-gradient-to-b">
+      </div>
+    </div>
+  </div>
+
+  <div class="container relative px-4 mx-auto">
+    <!-- Section Header -->
+    <div class="mb-16 text-center">
+      <div class="inline-block px-4 py-1 bg-[#0EA5E9]/10 rounded-full text-[#0EA5E9] text-sm font-medium mb-4">
+        Privacy & Security
+      </div>
+      <h2 [ngClass]="theme.text" class="mb-4 text-3xl font-bold">
+        Your Voice, Your Privacy
+      </h2>
+      <p [ngClass]="theme.textSecondary" class="max-w-2xl mx-auto">
+        State-of-the-art Edge AI technology ensures your voice data never leaves your device
+      </p>
+    </div>
+
+    <!-- Privacy Tabs -->
+    <div class="flex justify-center gap-4 mb-12">
+      <button *ngFor="let tab of tabs"
+              (click)="setActiveTab(tab.id)"
+              [ngClass]="[
+                'px-6 py-3 rounded-full flex items-center gap-2 transition-all duration-300',
+                activeTab === tab.id 
+                  ? 'bg-[#0EA5E9] text-white' 
+                  : theme.bgSecondary + ' ' + theme.textSecondary + ' hover:text-[#0EA5E9]'
+              ]">
+        <lucide-icon [name]="tab.icon" class="w-5 h-5"></lucide-icon>
+        {{tab.label}}
+      </button>
+    </div>
+
+    <!-- Comparison Grid -->
+    <div class="grid max-w-4xl gap-8 mx-auto md:grid-cols-2">
+      <div *ngFor="let comparison of comparisons[activeTab]"
+           [ngClass]="[
+             theme.bgSecondary,
+             'p-6 rounded-xl border transition-all duration-300',
+             comparison.negative ? 'border-red-500/20' : 'border-[#0EA5E9]'
+           ]">
+        <!-- Header -->
+        <div class="flex items-center gap-4 mb-6">
+          <div [ngClass]="comparison.negative ? 'bg-red-500/10' : 'bg-[#0EA5E9]/10'"
+               class="p-3 rounded-full">
+            <lucide-icon [name]="comparison.icon"
+                      [ngClass]="['w-6 h-6', comparison.negative ? 'text-red-500' : 'text-[#0EA5E9]']">
+            </lucide-icon>
+          </div>
+          <h3 [ngClass]="theme.text" class="font-semibold">
+            {{comparison.title}}
+          </h3>
+        </div>
+
+        <!-- Points -->
+        <div class="space-y-4">
+          <div *ngFor="let point of comparison.points" 
+               class="flex items-center gap-3">
+            <lucide-icon 
+              [name]="comparison.negative ? XCircleIcon : CheckCircle2Icon"
+              [ngClass]="comparison.negative ? 'text-red-500' : 'text-[#0EA5E9]'"
+              class="w-5 h-5">
+            </lucide-icon>
+            <span [ngClass]="theme.textSecondary" class="text-sm">{{point}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Info -->
+    <div class="mt-12 text-center">
+      <div [ngClass]="theme.bgSecondary" 
+           class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#0EA5E9]/20">
+        <lucide-icon [name]="LockIcon" class="w-4 h-4 text-[#0EA5E9]"></lucide-icon>
+        <span [ngClass]="theme.textSecondary" class="text-sm">
+          Military-grade encryption for all local data
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
